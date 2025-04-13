@@ -8,3 +8,5 @@ type Raza struct {
 	//
 	Mascotas []Mascota `gorm:"foreignKey:raza_id;"`
 }
+
+type Razas []Raza //lista
