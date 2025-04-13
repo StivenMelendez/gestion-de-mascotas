@@ -10,7 +10,6 @@ type Mascota struct {
 	//gorm.Model
 	ID                  uint           `gorm:"primaryKey"`
 	Nombre              string         `gorm:"not null"`
-	Tipo_id             uint           `gorm:"not null"`
 	Raza_id             uint           `gorm:"not null"`
 	Peso                float64        `gorm:"type:decimal(10,2)"`
 	Dueno_id            uint           `gorm:"not null"`

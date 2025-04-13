@@ -1,12 +1,18 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type Tipo struct {
-	gorm.Model
-	Nombre string `json:"nombre"`
+	//gorm.Model
+	ID        uint      `gorm:"primaryKey"`
+	Nombre    string    `gorm:"not null"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	DeletedAt time.Time `gorm:"index"`
 	//
-	Mascotas []Mascota `gorm:"foreignKey:Tipo_id;references:ID"`
+	Raza []Raza `gorm:"foreignKey:tipo_id;"`
 }
 
-type Tipos []Tipo
+type Tipos []*Tipo

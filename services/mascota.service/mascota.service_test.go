@@ -33,7 +33,6 @@ func TestSet(t *testing.T) {
 		Raza_id:             1,
 		Peso:                10.5,
 		Dueno_id:            1,
-		Tipo_id:             1,
 		Fecha_de_nacimiento: fechaNacimiento,
 		CreatedAt:           time.Now(),
 	}
@@ -75,7 +74,6 @@ func TestUpdate(t *testing.T) {
         "nombre": "Pedrito",
         "peso": 9.5,
         "raza_id": 1,
-        "tipo_id": 1,
         "fecha_de_nacimiento": "2020-01-01T00:00:00Z"
     }`
 
@@ -100,4 +98,25 @@ func TestUpdate(t *testing.T) {
 	}
 }
 func TestDelete(t *testing.T) {
+	e := echo.New()
+
+	req := httptest.NewRequest(http.MethodDelete, "/mascotas/1", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+
+	service := mascota_service.NewMascotaService(nil)
+
+	err := service.Delete(c)
+	if err != nil {
+		t.Errorf("Error en la prueba de eliminación: %v", err)
+	}
+
+	if rec.Code != http.StatusOK {
+		t.Errorf("Código de estado esperado %d, obtenido %d", http.StatusOK, rec.Code)
+	}
 }

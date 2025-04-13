@@ -2,6 +2,7 @@ package mascota_repository
 
 import (
 	"context"
+	"fmt"
 	"gestion-de-mascotas/database"
 	m "gestion-de-mascotas/models"
 	"time"
@@ -54,7 +55,6 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 			"nombre":              mascota.Nombre,
 			"peso":                mascota.Peso,
 			"raza_id":             mascota.Raza_id,
-			"tipo_id":             mascota.Tipo_id,
 			"fecha_de_nacimiento": mascota.Fecha_de_nacimiento,
 			"updatedat":           time.Now(),
 		},
@@ -69,5 +69,14 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 }
 
 func Delete(mascota_id uint) error {
+	filter := bson.M{"id": mascota_id}
+
+	result, err := Collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return err
+	}
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("no se encontró ningún documento con el id %d", mascota_id)
+	}
 	return nil
 }
