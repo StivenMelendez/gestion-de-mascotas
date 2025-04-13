@@ -29,15 +29,16 @@ func (ms *MascotaService) Set(c echo.Context, mascota models.Mascota) error {
 		map[string]string{"message": "mascota insertada con exito"})
 }
 
-func (ms *MascotaService) Get(c echo.Context) error {
+func (ms *MascotaService) Get(c echo.Context) (models.Mascotas, error) {
 	mascotas, err := mar.Get()
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError,
+		return models.Mascotas{}, c.JSON(http.StatusInternalServerError,
 			map[string]string{"message": "error al obtener las mascotas"})
 	}
 
-	return c.JSON(http.StatusOK, mascotas)
+	c.JSON(http.StatusOK, mascotas)
+	return mascotas, nil
 }
 
 func (ms *MascotaService) Update(c echo.Context) error {

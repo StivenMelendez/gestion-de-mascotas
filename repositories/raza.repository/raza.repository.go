@@ -35,26 +35,22 @@ func Set(razas []models.Raza) error {
 func Get(tipoID uint) (models.Razas, error) {
 	var razas models.Razas
 
-	// Crear un filtro para buscar razas por tipo
 	filter := bson.M{"tipo_id": tipoID}
 
-	// Buscar las razas en la colección que coincidan con el filtro
 	cursor, err := Collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(ctx)
 
-	// Iterar sobre los resultados y decodificarlos
 	for cursor.Next(ctx) {
 		var raza models.Raza
 		if err := cursor.Decode(&raza); err != nil {
 			return nil, err
 		}
-		razas = append(razas, raza) // Agregar el puntero al slice
+		razas = append(razas, raza)
 	}
 
-	// Verificar si hubo errores durante la iteración
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}

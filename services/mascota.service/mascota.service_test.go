@@ -59,12 +59,12 @@ func TestGet(t *testing.T) {
 
 	service := mascota_service.NewMascotaService(nil)
 
-	err := service.Get(c)
+	mascotas, err := service.Get(c)
 
 	if err != nil {
 		t.Errorf("Error en la prueba de obtencion: %v", err)
 	} else {
-		t.Logf("Prueba de obtencion correcta")
+		t.Logf("Prueba de obtencion correcta %+v", mascotas)
 	}
 }
 func TestUpdate(t *testing.T) {

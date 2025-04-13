@@ -36,23 +36,20 @@ func Set(tipos []models.Tipo) error {
 func Get() (models.Tipos, error) {
 	var tipos models.Tipos
 
-	// Buscar todos los tipos en la colección
 	cursor, err := Collection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(ctx)
 
-	// Iterar sobre los resultados y decodificarlos
 	for cursor.Next(ctx) {
 		var tipo models.Tipo
 		if err := cursor.Decode(&tipo); err != nil {
 			return nil, err
 		}
-		tipos = append(tipos, tipo) // Agregar el puntero al slice
+		tipos = append(tipos, tipo)
 	}
 
-	// Verificar si hubo errores durante la iteración
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
