@@ -1,0 +1,98 @@
+[
+    {
+      "id": 1,
+      "nombre": "Labrador Retriever",
+      "descripcion": "Perro amigable, inteligente y juguetón, excelente para familias.",
+      "tipo_id": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Pastor Alemán",
+      "descripcion": "Perro leal, valiente y muy inteligente, usado comúnmente como perro de trabajo.",
+      "tipo_id": 1
+    },
+    {
+      "id": 3,
+      "nombre": "Bulldog Francés",
+      "descripcion": "Perro pequeño y musculoso, de carácter tranquilo y afectuoso.",
+      "tipo_id": 1
+    },
+    {
+      "id": 4,
+      "nombre": "Siamés",
+      "descripcion": "Gato vocal y sociable, con un pelaje distintivo y ojos azules.",
+      "tipo_id": 2
+    },
+    {
+      "id": 5,
+      "nombre": "Persa",
+      "descripcion": "Gato de pelo largo y cara plana, tranquilo y cariñoso.",
+      "tipo_id": 2
+    },
+    {
+      "id": 6,
+      "nombre": "Bengalí",
+      "descripcion": "Gato con un pelaje similar al de un leopardo, muy activo y juguetón.",
+      "tipo_id": 2
+    },
+    {
+      "id": 7,
+      "nombre": "Canario",
+      "descripcion": "Pájaro pequeño conocido por su canto melodioso y colores brillantes.",
+      "tipo_id": 3
+    },
+    {
+      "id": 8,
+      "nombre": "Periquito Australiano",
+      "descripcion": "Pájaro pequeño y colorido, popular como mascota por su facilidad de cuidado.",
+      "tipo_id": 3
+    },
+    {
+      "id": 9,
+      "nombre": "Guppy",
+      "descripcion": "Pez pequeño y colorido, ideal para acuarios comunitarios.",
+      "tipo_id": 4
+    },
+    {
+      "id": 10,
+      "nombre": "Pez Betta",
+      "descripcion": "Pez conocido por sus aletas coloridas y su naturaleza territorial.",
+      "tipo_id": 4
+    },
+    {
+      "id": 11,
+      "nombre": "Holandés Enano",
+      "descripcion": "Conejo pequeño y compacto, con orejas cortas y carácter dócil.",
+      "tipo_id": 5
+    },
+    {
+      "id": 12,
+      "nombre": "Cabeza de León",
+      "descripcion": "Conejo con una melena distintiva alrededor de la cabeza, de temperamento tranquilo.",
+      "tipo_id": 5
+    },
+    {
+      "id": 13,
+      "nombre": "Sirio",
+      "descripcion": "Hamster grande y solitario, el más común como mascota.",
+      "tipo_id": 6
+    },
+    {
+      "id": 14,
+      "nombre": "Roborovski",
+      "descripcion": "Hamster más pequeño y rápido, más adecuado para observación que para manipulación.",
+      "tipo_id": 6
+    },
+    {
+      "id": 15,
+      "nombre": "Tortuga de Orejas Rojas",
+      "descripcion": "Tortuga acuática con marcas rojas distintivas a los lados de la cabeza.",
+      "tipo_id": 7
+    },
+    {
+      "id": 16,
+      "nombre": "Tortuga Mediterránea",
+      "descripcion": "Tortuga terrestre de tamaño mediano, con un caparazón abombado.",
+      "tipo_id": 7
+    }
+  ]

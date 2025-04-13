@@ -41,7 +41,7 @@ func Get() (m.Mascotas, error) {
 		if err != nil {
 			return nil, err
 		}
-		Mascotas = append(Mascotas, &Mascota)
+		Mascotas = append(Mascotas, Mascota)
 	}
 
 	return Mascotas, nil
@@ -54,8 +54,8 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 		"$set": bson.M{
 			"nombre":              mascota.Nombre,
 			"peso":                mascota.Peso,
-			"raza_id":             mascota.Raza_id,
-			"fecha_de_nacimiento": mascota.Fecha_de_nacimiento,
+			"raza_id":             mascota.RazaID,
+			"fecha_de_nacimiento": mascota.FechaDeNacimiento,
 			"updatedat":           time.Now(),
 		},
 	}

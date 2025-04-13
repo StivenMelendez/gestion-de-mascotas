@@ -28,13 +28,13 @@ func TestSet(t *testing.T) {
 	}
 
 	mascota := models.Mascota{
-		ID:                  1,
-		Nombre:              "Pepito",
-		Raza_id:             1,
-		Peso:                10.5,
-		Dueno_id:            1,
-		Fecha_de_nacimiento: fechaNacimiento,
-		CreatedAt:           time.Now(),
+		ID:                1,
+		Nombre:            "Pepito",
+		RazaID:            1,
+		Peso:              10.5,
+		DuenoID:           1,
+		FechaDeNacimiento: fechaNacimiento,
+		CreatedAt:         time.Now(),
 	}
 
 	service := mascota_service.NewMascotaService(nil)

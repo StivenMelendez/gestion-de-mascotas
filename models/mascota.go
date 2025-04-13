@@ -2,24 +2,18 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Mascota struct {
-	//gorm.Model
-	ID                  uint           `gorm:"primaryKey"`
-	Nombre              string         `gorm:"not null"`
-	Raza_id             uint           `gorm:"not null"`
-	Peso                float64        `gorm:"type:decimal(10,2)"`
-	Dueno_id            uint           `gorm:"not null"`
-	Fecha_de_nacimiento time.Time      `gorm:"format:2006-01-02"`
-	CreatedAt           time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt           time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt           gorm.DeletedAt `gorm:"index"`
-	//
-	Raza Raza `gorm:"foreignKey:Raza_id;references:ID"`
-	Tipo Tipo `gorm:"foreignKey:Tipo_id;references:ID"`
+	ID                uint      `bson:"id" json:"id"`
+	Nombre            string    `bson:"nombre" json:"nombre"`
+	RazaID            uint      `bson:"raza_id" json:"raza_id"`
+	Peso              float64   `bson:"peso" json:"peso"`
+	DuenoID           uint      `bson:"dueno_id" json:"dueno_id"`
+	FechaDeNacimiento time.Time `bson:"fecha_de_nacimiento" json:"fecha_de_nacimiento"`
+	CreatedAt         time.Time `bson:"created_at" json:"created_at"`
+	UpdatedAt         time.Time `bson:"updated_at" json:"updated_at"`
+	DeletedAt         time.Time `bson:"deleted_at,omitempty" json:"deleted_at,omitempty"`
 }
 
-type Mascotas []*Mascota
+type Mascotas []Mascota

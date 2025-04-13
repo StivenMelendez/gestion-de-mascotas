@@ -1,21 +1,10 @@
 package models
 
-import (
-	"time"
-
-	"gorm.io/gorm"
-)
-
 type Raza struct {
-	ID        uint           `gorm:"primaryKey"`
-	Nombre    string         `json:"nombre"`
-	Tipo_id   uint           `json:"tipo_id"`
-	CreatedAt time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-	//
-	Mascotas []Mascota `gorm:"foreignKey:raza_id;"`
-	Tipo     Tipo      `gorm:"foreignKey:tipo_id;references:id"`
+	ID          uint   `bson:"id" json:"id"`
+	Nombre      string `bson:"nombre" json:"nombre"`
+	TipoID      uint   `bson:"tipo_id" json:"tipo_id"`
+	Descripcion string `bson:"descripcion" json:"descripcion"`
 }
 
-type Razas []Raza //lista
+type Razas []Raza
