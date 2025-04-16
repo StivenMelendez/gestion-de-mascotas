@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	// Inicializar la base de datos
 	fmt.Println("Inicializando la aplicación...")
 
 	var (
@@ -18,7 +17,6 @@ func main() {
 		path_razas = "default-info/razas-mascotas.json"
 	)
 
-	// Insertar datos iniciales desde los archivos JSON
 	err := tipo_service.Set(path_tipos)
 	if err != nil {
 		log.Fatalf("Error al insertar los tipos de mascota: %v", err)
@@ -31,12 +29,6 @@ func main() {
 	}
 	fmt.Println("Razas insertadas correctamente.")
 
-	// Configurar un servidor HTTP (opcional)
-	/*http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "¡Bienvenido a la API de Gestión de Mascotas!")
-	})*/
-
-	// Iniciar el servidor
 	port := ":8080"
 	fmt.Printf("Servidor iniciado en http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
