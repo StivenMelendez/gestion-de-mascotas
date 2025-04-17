@@ -47,6 +47,27 @@ func Get() (m.Mascotas, error) {
 	return Mascotas, nil
 }
 
+func GetByDuenoID(duenoID uint) (m.Mascotas, error) {
+	var Mascotas m.Mascotas
+
+	filter := bson.M{"dueno_id": duenoID}
+	cursor, err := Collection.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	for cursor.Next(ctx) {
+		var Mascota m.Mascota
+		err = cursor.Decode(&Mascota)
+		if err != nil {
+			return nil, err
+		}
+		Mascotas = append(Mascotas, Mascota)
+	}
+
+	return Mascotas, nil
+}
+
 func Update(mascota m.Mascota, mascotaID uint) error {
 	filter := bson.M{"id": mascotaID}
 

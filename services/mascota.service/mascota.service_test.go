@@ -2,6 +2,7 @@ package mascota_service_test
 
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -15,12 +16,6 @@ import (
 
 func TestSet(t *testing.T) {
 	e := echo.New()
-
-	req := httptest.NewRequest(http.MethodPost, "/mascotas", bytes.NewBuffer([]byte(`{}`)))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
 
 	fechaNacimiento, err := time.Parse("2006-01-02", "2020-01-01")
 	if err != nil {
@@ -37,14 +32,25 @@ func TestSet(t *testing.T) {
 		CreatedAt:         time.Now(),
 	}
 
+	// Serializar la mascota a JSON
+	mascotaJSON, err := json.Marshal(mascota)
+	if err != nil {
+		t.Fatalf("Error al serializar la mascota: %v", err)
+	}
+
+	// Crear la solicitud con el JSON de la mascota
+	req := httptest.NewRequest(http.MethodPost, "/mascotas", bytes.NewBuffer(mascotaJSON))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
 	service := mascota_service.NewMascotaService(nil)
 
-	err2 := service.Set(c, mascota)
-
-	if err2 != nil {
-		t.Errorf("Error en la prueba de insercion: %v", err2)
+	if err := service.Set(c); err != nil {
+		t.Errorf("Error en la prueba de inserción: %v", err)
 	} else {
-		t.Logf("Prueba de insercion correcta")
+		t.Logf("Prueba de inserción correcta")
 	}
 }
 
@@ -59,12 +65,34 @@ func TestGet(t *testing.T) {
 
 	service := mascota_service.NewMascotaService(nil)
 
-	mascotas, err := service.Get(c)
-
-	if err != nil {
+	if err := service.Get(c); err != nil {
 		t.Errorf("Error en la prueba de obtencion: %v", err)
 	} else {
-		t.Logf("Prueba de obtencion correcta %+v", mascotas)
+		t.Logf("Prueba de obtencion correcta")
+	}
+}
+
+func TestGetByDuenoID(t *testing.T) {
+	e := echo.New()
+
+	req := httptest.NewRequest(http.MethodGet, "/mascotas/dueno/1", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	c.SetParamNames("dueno_id")
+	c.SetParamValues("1")
+
+	service := mascota_service.NewMascotaService(nil)
+
+	err := service.GetByDuenoID(c)
+	if err != nil {
+		t.Errorf("Error en la prueba de obtención por dueño ID: %v", err)
+	}
+
+	if rec.Code != http.StatusOK {
+		t.Errorf("Código de estado esperado %d, obtenido %d", http.StatusOK, rec.Code)
 	}
 }
 func TestUpdate(t *testing.T) {

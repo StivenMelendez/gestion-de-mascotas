@@ -5,8 +5,14 @@ import (
 	"log"
 	"net/http"
 
+	"gestion-de-mascotas/database"
+	"gestion-de-mascotas/routes"
+	mascota_service "gestion-de-mascotas/services/mascota.service"
 	raza_service "gestion-de-mascotas/services/raza.service"
 	tipo_service "gestion-de-mascotas/services/tipo.service"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -17,14 +23,28 @@ func main() {
 		path_razas = "default-info/razas-mascotas.json"
 	)
 
-	err := tipo_service.Set(path_tipos)
-	if err != nil {
+	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"}, // Cambia esto al dominio del frontend
+		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
+	}))
+
+	db := database.GetCollection("mascotas")
+
+	mascotaService := mascota_service.NewMascotaService(db)
+
+	routes.RegisterRoutes(e, mascotaService)
+
+	if err := tipo_service.Set(path_tipos); err != nil {
 		log.Fatalf("Error al insertar los tipos de mascota: %v", err)
 	}
 	fmt.Println("Tipos de mascota insertados correctamente.")
 
-	err = raza_service.Set(path_razas)
-	if err != nil {
+	if err := raza_service.Set(path_razas); err != nil {
 		log.Fatalf("Error al insertar las razas: %v", err)
 	}
 	fmt.Println("Razas insertadas correctamente.")

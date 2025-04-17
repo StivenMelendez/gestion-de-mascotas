@@ -6,39 +6,57 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
 
-	"gorm.io/gorm"
+	"github.com/labstack/echo/v4"
 )
 
 type MascotaService struct {
-	DB *gorm.DB
+	DB *mongo.Collection
 }
 
-func NewMascotaService(db *gorm.DB) *MascotaService {
+func NewMascotaService(db *mongo.Collection) *MascotaService {
 	return &MascotaService{DB: db}
 }
 
-func (ms *MascotaService) Set(c echo.Context, mascota models.Mascota) error {
-	err := mar.Set(mascota)
-	if err != nil {
-		return err
+func (ms *MascotaService) Set(c echo.Context) error {
+	var mascota models.Mascota
+	if err := c.Bind(&mascota); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
+	}
+
+	if err := mar.Set(mascota); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al insertar la mascota"})
 	}
 
 	return c.JSON(http.StatusOK,
 		map[string]string{"message": "mascota insertada con exito"})
 }
 
-func (ms *MascotaService) Get(c echo.Context) (models.Mascotas, error) {
+func (ms *MascotaService) Get(c echo.Context) error {
 	mascotas, err := mar.Get()
 
 	if err != nil {
-		return models.Mascotas{}, c.JSON(http.StatusInternalServerError,
+		return c.JSON(http.StatusInternalServerError,
 			map[string]string{"message": "error al obtener las mascotas"})
 	}
 
-	c.JSON(http.StatusOK, mascotas)
-	return mascotas, nil
+	return c.JSON(http.StatusOK, mascotas)
+}
+
+func (ms *MascotaService) GetByDuenoID(c echo.Context) error {
+	duenoIDStr := c.Param("dueno_id")
+	duenoID, err := strconv.Atoi(duenoIDStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de dueño inválido"})
+	}
+
+	mascotas, err := mar.GetByDuenoID(uint(duenoID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al obtener las mascotas"})
+	}
+
+	return c.JSON(http.StatusOK, mascotas)
 }
 
 func (ms *MascotaService) Update(c echo.Context) error {
