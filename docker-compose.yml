@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080" # Mapea el puerto 8080 del contenedor al puerto 8080 de tu máquina
+      - "8000:8000" # Mapea el puerto 8080 del contenedor al puerto 8080 de tu máquina
     depends_on:
       - mongodb # Asegura que MongoDB esté disponible antes de iniciar la app
     environment:

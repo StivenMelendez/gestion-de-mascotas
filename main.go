@@ -49,7 +49,7 @@ func main() {
 	}
 	fmt.Println("Razas insertadas correctamente.")
 
-	port := ":8080"
+	port := ":8000"
 	fmt.Printf("Servidor iniciado en http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

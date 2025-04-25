@@ -12,5 +12,4 @@ func RegisterRoutes(e *echo.Echo, mascotaService *mascota_service.MascotaService
 	e.GET("/mascotas/dueno/:dueno_id", mascotaService.GetByDuenoID)
 	e.PUT("/mascotas/:id", mascotaService.Update)
 	e.DELETE("/mascotas/:id", mascotaService.Delete)
-
 }
