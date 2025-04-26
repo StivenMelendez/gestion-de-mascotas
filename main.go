@@ -5,9 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"gestion-de-mascotas/database"
-	"gestion-de-mascotas/routes"
-	mascota_service "gestion-de-mascotas/services/mascota.service"
+	//"gestion-de-mascotas/routes"
+
 	raza_service "gestion-de-mascotas/services/raza.service"
 	tipo_service "gestion-de-mascotas/services/tipo.service"
 	"gestion-de-mascotas/utils"
@@ -38,11 +37,11 @@ func main() {
 		log.Fatalf("Error al crear el directorio de uploads: %v", err)
 	}
 
-	db := database.GetCollection("mascotas")
+	/*db := database.GetCollection("mascotas")
 
-	mascotaService := mascota_service.NewMascotaService(db)
+	mascotaService := mascota_service.NewMascotaService(db)*/
 
-	routes.RegisterRoutes(e, mascotaService)
+	//routes.RegisterRoutes(e /*, mascotaService*/)
 
 	if err := tipo_service.Set(path_tipos); err != nil {
 		log.Fatalf("Error al insertar los tipos de mascota: %v", err)
