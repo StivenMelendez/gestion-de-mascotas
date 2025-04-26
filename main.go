@@ -10,6 +10,7 @@ import (
 	mascota_service "gestion-de-mascotas/services/mascota.service"
 	raza_service "gestion-de-mascotas/services/raza.service"
 	tipo_service "gestion-de-mascotas/services/tipo.service"
+	"gestion-de-mascotas/utils"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -32,6 +33,10 @@ func main() {
 		AllowOrigins: []string{"http://localhost:3000"}, // Cambia esto al dominio del frontend
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
+
+	if err := utils.EnsureUploadsDir(); err != nil {
+		log.Fatalf("Error al crear el directorio de uploads: %v", err)
+	}
 
 	db := database.GetCollection("mascotas")
 

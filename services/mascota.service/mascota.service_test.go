@@ -22,6 +22,8 @@ func TestSet(t *testing.T) {
 		t.Fatalf("Failed to parse date: %v", err)
 	}
 
+	foto := "./images/mascota.jpg"
+
 	mascota := models.Mascota{
 		ID:                1,
 		Nombre:            "Pepito",
@@ -30,6 +32,7 @@ func TestSet(t *testing.T) {
 		DuenoID:           1,
 		FechaDeNacimiento: fechaNacimiento,
 		CreatedAt:         time.Now(),
+		Foto:              foto,
 	}
 
 	// Serializar la mascota a JSON
@@ -45,9 +48,9 @@ func TestSet(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
-	service := mascota_service.NewMascotaService(nil)
+	//service := mascota_service.NewMascotaService(nil)
 
-	if err := service.Set(c); err != nil {
+	if err := mascota_service.Set(c); err != nil {
 		t.Errorf("Error en la prueba de inserción: %v", err)
 	} else {
 		t.Logf("Prueba de inserción correcta")
@@ -63,9 +66,9 @@ func TestGet(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
-	service := mascota_service.NewMascotaService(nil)
+	//service := mascota_service.NewMascotaService(nil)
 
-	if err := service.Get(c); err != nil {
+	if err := mascota_service.Get(c); err != nil {
 		t.Errorf("Error en la prueba de obtencion: %v", err)
 	} else {
 		t.Logf("Prueba de obtencion correcta")
@@ -84,9 +87,9 @@ func TestGetByDuenoID(t *testing.T) {
 	c.SetParamNames("dueno_id")
 	c.SetParamValues("1")
 
-	service := mascota_service.NewMascotaService(nil)
+	//service := mascota_service.NewMascotaService(nil)
 
-	err := service.GetByDuenoID(c)
+	err := mascota_service.GetByDuenoID(c)
 	if err != nil {
 		t.Errorf("Error en la prueba de obtención por dueño ID: %v", err)
 	}
@@ -95,6 +98,7 @@ func TestGetByDuenoID(t *testing.T) {
 		t.Errorf("Código de estado esperado %d, obtenido %d", http.StatusOK, rec.Code)
 	}
 }
+
 func TestUpdate(t *testing.T) {
 	e := echo.New()
 
@@ -114,9 +118,9 @@ func TestUpdate(t *testing.T) {
 	c.SetParamNames("id")
 	c.SetParamValues("1")
 
-	service := mascota_service.NewMascotaService(nil)
+	//service := mascota_service.NewMascotaService(nil)
 
-	err := service.Update(c)
+	err := mascota_service.Update(c)
 	if err != nil {
 		t.Errorf("Error en la prueba de actualización: %v", err)
 	}
@@ -137,9 +141,9 @@ func TestDelete(t *testing.T) {
 	c.SetParamNames("id")
 	c.SetParamValues("1")
 
-	service := mascota_service.NewMascotaService(nil)
+	//service := mascota_service.NewMascotaService(nil)
 
-	err := service.Delete(c)
+	err := mascota_service.Delete(c)
 	if err != nil {
 		t.Errorf("Error en la prueba de eliminación: %v", err)
 	}

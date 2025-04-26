@@ -15,11 +15,11 @@ type MascotaService struct {
 	DB *mongo.Collection
 }
 
-func NewMascotaService(db *mongo.Collection) *MascotaService {
+/*func NewMascotaService(db *mongo.Collection) *MascotaService {
 	return &MascotaService{DB: db}
-}
+}*/
 
-func (ms *MascotaService) Set(c echo.Context) error {
+func /*(ms *MascotaService)*/ Set(c echo.Context) error {
 	var mascota models.Mascota
 	if err := c.Bind(&mascota); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
@@ -33,7 +33,7 @@ func (ms *MascotaService) Set(c echo.Context) error {
 		map[string]string{"message": "mascota insertada con exito"})
 }
 
-func (ms *MascotaService) Get(c echo.Context) error {
+func /*(ms *MascotaService)*/ Get(c echo.Context) error {
 	mascotas, err := mac.Get()
 
 	if err != nil {
@@ -44,7 +44,7 @@ func (ms *MascotaService) Get(c echo.Context) error {
 	return c.JSON(http.StatusOK, mascotas)
 }
 
-func (ms *MascotaService) GetByDuenoID(c echo.Context) error {
+func /*(ms *MascotaService)*/ GetByDuenoID(c echo.Context) error {
 	duenoIDStr := c.Param("dueno_id")
 	duenoID, err := strconv.Atoi(duenoIDStr)
 	if err != nil {
@@ -59,7 +59,7 @@ func (ms *MascotaService) GetByDuenoID(c echo.Context) error {
 	return c.JSON(http.StatusOK, mascotas)
 }
 
-func (ms *MascotaService) Update(c echo.Context) error {
+func /*(ms *MascotaService)*/ Update(c echo.Context) error {
 	mascotaID := c.Param("id")
 	id, err := strconv.Atoi(mascotaID)
 	if err != nil {
@@ -79,7 +79,7 @@ func (ms *MascotaService) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"message": "Mascota actualizada con éxito"})
 }
 
-func (ms *MascotaService) Delete(c echo.Context) error {
+func /*(ms *MascotaService)*/ Delete(c echo.Context) error {
 	mascota_id_str := c.Param("id")
 
 	mascota_id, err := strconv.ParseInt(mascota_id_str, 10, 32)
