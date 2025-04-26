@@ -3,8 +3,8 @@ package raza_service
 import (
 	"encoding/json"
 	"fmt"
+	rac "gestion-de-mascotas/controllers/raza.controller"
 	"gestion-de-mascotas/models"
-	raza_repository "gestion-de-mascotas/repositories/raza.repository"
 	"os"
 )
 
@@ -19,7 +19,7 @@ func Set(filePath string) error {
 		return fmt.Errorf("error al decodificar el JSON: %v", err)
 	}
 
-	err = raza_repository.Set(razas)
+	err = rac.Set(razas)
 	if err != nil {
 		return fmt.Errorf("error al insertar las razas: %v", err)
 	}
@@ -28,7 +28,7 @@ func Set(filePath string) error {
 }
 
 func Get(tipoID uint) (models.Razas, error) {
-	razas, err := raza_repository.Get(tipoID)
+	razas, err := rac.Get(tipoID)
 	if err != nil {
 		return nil, fmt.Errorf("error al obtener las razas por tipo: %v", err)
 	}

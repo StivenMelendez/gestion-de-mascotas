@@ -1,8 +1,8 @@
 package mascota_service
 
 import (
+	mac "gestion-de-mascotas/controllers/mascota.controller"
 	"gestion-de-mascotas/models"
-	mar "gestion-de-mascotas/repositories/mascota.repository"
 	"net/http"
 	"strconv"
 
@@ -25,7 +25,7 @@ func (ms *MascotaService) Set(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
 	}
 
-	if err := mar.Set(mascota); err != nil {
+	if err := mac.Set(mascota); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al insertar la mascota"})
 	}
 
@@ -34,7 +34,7 @@ func (ms *MascotaService) Set(c echo.Context) error {
 }
 
 func (ms *MascotaService) Get(c echo.Context) error {
-	mascotas, err := mar.Get()
+	mascotas, err := mac.Get()
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError,
@@ -51,7 +51,7 @@ func (ms *MascotaService) GetByDuenoID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de dueño inválido"})
 	}
 
-	mascotas, err := mar.GetByDuenoID(uint(duenoID))
+	mascotas, err := mac.GetByDuenoID(uint(duenoID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al obtener las mascotas"})
 	}
@@ -71,7 +71,7 @@ func (ms *MascotaService) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
 	}
 
-	err = mar.Update(mascota, uint(id))
+	err = mac.Update(mascota, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al actualizar la mascota"})
 	}
@@ -87,7 +87,7 @@ func (ms *MascotaService) Delete(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de mascota invalido"})
 	}
 
-	err = mar.Delete(uint(mascota_id))
+	err = mac.Delete(uint(mascota_id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError,
 			map[string]string{"message": "error al eliminar la mascota"})

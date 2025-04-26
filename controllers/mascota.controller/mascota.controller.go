@@ -1,4 +1,4 @@
-package mascota_repository
+package mascota_controller
 
 import (
 	"context"
@@ -47,6 +47,19 @@ func Get() (m.Mascotas, error) {
 	return Mascotas, nil
 }
 
+func GetByID(mascotaID uint) (m.Mascota, error) {
+	var Mascota m.Mascota
+
+	filter := bson.M{"id": mascotaID}
+
+	err := Collection.FindOne(ctx, filter).Decode(&Mascota)
+	if err != nil {
+		return Mascota, err
+	}
+
+	return Mascota, nil
+}
+
 func GetByDuenoID(duenoID uint) (m.Mascotas, error) {
 	var Mascotas m.Mascotas
 
@@ -73,6 +86,7 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 
 	update := bson.M{
 		"$set": bson.M{
+			"Foto":                mascota.Foto,
 			"nombre":              mascota.Nombre,
 			"peso":                mascota.Peso,
 			"raza_id":             mascota.RazaID,
