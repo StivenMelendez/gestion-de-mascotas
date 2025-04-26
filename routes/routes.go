@@ -6,10 +6,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func RegisterRoutes(e *echo.Echo, mascotaService *mascota_service.MascotaService) {
-	e.POST("/mascotas", mascotaService.Set)
-	e.GET("/mascotas", mascotaService.Get)
-	e.GET("/mascotas/dueno/:dueno_id", mascotaService.GetByDuenoID)
-	e.PUT("/mascotas/:id", mascotaService.Update)
-	e.DELETE("/mascotas/:id", mascotaService.Delete)
+func RegisterRoutes(e *echo.Echo) {
+	// Rutas para el servicio de mascotas
+	e.POST("/mascotas", mascota_service.Set)                         // Crear una nueva mascota
+	e.GET("/mascotas", mascota_service.Get)                          // Obtener todas las mascotas
+	e.GET("/mascotas/dueno/:dueno_id", mascota_service.GetByDuenoID) // Obtener mascotas por ID del dueño
+	e.PUT("/mascotas/:id", mascota_service.Update)                   // Actualizar una mascota
+	e.DELETE("/mascotas/:id", mascota_service.Delete)                // Eliminar una mascota
 }
