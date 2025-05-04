@@ -15,39 +15,31 @@ var (
 	ctx        = context.Background()
 )
 
-func Set(Mascota m.Mascota) error {
-	_, err := Collection.InsertOne(ctx, Mascota)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-
+func Set(mascota m.Mascota) error {
+	_, err := Collection.InsertOne(ctx, mascota)
+	return err
 }
 
 func Get() (m.Mascotas, error) {
-	var Mascotas m.Mascotas
-
-	filter := bson.D{}
-	cursor, err := Collection.Find(ctx, filter)
+	var mascotas m.Mascotas
+	cursor, err := Collection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
+	defer cursor.Close(ctx)
 
 	for cursor.Next(ctx) {
-		var Mascota m.Mascota
-		err = cursor.Decode(&Mascota)
-		if err != nil {
+		var mascota m.Mascota
+		if err := cursor.Decode(&mascota); err != nil {
 			return nil, err
 		}
-		Mascotas = append(Mascotas, Mascota)
+		mascotas = append(mascotas, mascota)
 	}
 
-	return Mascotas, nil
+	return mascotas, nil
 }
 
-func GetByID(mascotaID uint) (m.Mascota, error) {
+/*func GetByName(mascotaID uint) (m.Mascota, error) {
 	var Mascota m.Mascota
 
 	filter := bson.M{"id": mascotaID}
@@ -58,60 +50,52 @@ func GetByID(mascotaID uint) (m.Mascota, error) {
 	}
 
 	return Mascota, nil
-}
+}*/
 
 func GetByDuenoID(duenoID uint) (m.Mascotas, error) {
-	var Mascotas m.Mascotas
-
+	var mascotas m.Mascotas
 	filter := bson.M{"dueno_id": duenoID}
 	cursor, err := Collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
+	defer cursor.Close(ctx)
 
 	for cursor.Next(ctx) {
-		var Mascota m.Mascota
-		err = cursor.Decode(&Mascota)
-		if err != nil {
+		var mascota m.Mascota
+		if err := cursor.Decode(&mascota); err != nil {
 			return nil, err
 		}
-		Mascotas = append(Mascotas, Mascota)
+		mascotas = append(mascotas, mascota)
 	}
 
-	return Mascotas, nil
+	return mascotas, nil
 }
 
 func Update(mascota m.Mascota, mascotaID uint) error {
 	filter := bson.M{"id": mascotaID}
-
 	update := bson.M{
 		"$set": bson.M{
-			"Foto":                mascota.Foto,
+			"foto":                mascota.Foto,
 			"nombre":              mascota.Nombre,
+			"raza":                mascota.Raza,
 			"peso":                mascota.Peso,
-			"Raza":                mascota.Raza,
 			"fecha_de_nacimiento": mascota.FechaDeNacimiento,
-			"updatedat":           time.Now(),
+			"updated_at":          time.Now(),
 		},
 	}
-
 	_, err := Collection.UpdateOne(ctx, filter, update)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
-func Delete(mascota_id uint) error {
-	filter := bson.M{"id": mascota_id}
-
+func Delete(mascotaID uint) error {
+	filter := bson.M{"id": mascotaID}
 	result, err := Collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
 	if result.DeletedCount == 0 {
-		return fmt.Errorf("no se encontró ningún documento con el id %d", mascota_id)
+		return fmt.Errorf("no se encontró ningún documento con el id %d", mascotaID)
 	}
 	return nil
 }

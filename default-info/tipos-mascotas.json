@@ -1,42 +1,35 @@
 [
     {
-      "id": 1,
       "nombre": "Perro",
       "descripcion": "Mamífero doméstico de la familia Canidae, conocido por su lealtad y variedad de razas.",
       "activo": true
     },
     {
-      "id": 2,
       "nombre": "Gato",
       "descripcion": "Mamífero doméstico de la familia Felidae, independiente y ágil.",
       "activo": true
     },
     {
-      "id": 3,
       "nombre": "Pájaro",
       "descripcion": "Animal vertebrado volador de la clase Aves, popular como mascota por su canto y colores.",
       "activo": true
     },
     {
-      "id": 4,
       "nombre": "Pez",
       "descripcion": "Animal acuático vertebrado, común en acuarios domésticos.",
       "activo": true
     },
     {
-      "id": 5,
       "nombre": "Conejo",
       "descripcion": "Mamífero lagomorfo doméstico, sociable y de rápido crecimiento.",
       "activo": true
     },
     {
-      "id": 6,
       "nombre": "Hamster",
       "descripcion": "Roedor pequeño, nocturno y popular como mascota para niños.",
       "activo": true
     },
     {
-      "id": 7,
       "nombre": "Tortuga",
       "descripcion": "Reptil de la orden Testudines, de larga vida y bajo mantenimiento.",
       "activo": true

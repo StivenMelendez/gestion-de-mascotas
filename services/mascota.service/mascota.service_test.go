@@ -17,36 +17,17 @@ import (
 func TestSet(t *testing.T) {
 	e := echo.New()
 
-	fechaNacimiento, err := time.Parse("2006-01-02", "2020-01-01")
-	if err != nil {
-		t.Fatalf("Failed to parse date: %v", err)
-	}
-
-	foto := "./images/mascota.jpg"
-
 	mascota := models.Mascota{
-		Foto:   foto,
-		Nombre: "Pepito",
-		Raza: models.Raza{
-			Nombre: "Labrador",
-			Tipo: models.Tipo{
-				Nombre: "Perro",
-			},
-		},
+		Foto:              "./images/mascota.jpg",
+		Nombre:            "Pepito",
+		Raza:              models.Raza{Nombre: "Labrador", Tipo: models.Tipo{Nombre: "Perro"}},
 		Peso:              10.5,
 		DuenoID:           1,
-		FechaDeNacimiento: fechaNacimiento,
-		CreatedAt:         time.Now(),
+		FechaDeNacimiento: time.Now(),
 	}
 
-	// Serializar la mascota a JSON
-	mascotaJSON, err := json.Marshal(mascota)
-	if err != nil {
-		t.Fatalf("Error al serializar la mascota: %v", err)
-	}
-
-	// Crear la solicitud con el JSON de la mascota
-	req := httptest.NewRequest(http.MethodPost, "/mascotas", bytes.NewBuffer(mascotaJSON))
+	body, _ := json.Marshal(mascota)
+	req := httptest.NewRequest(http.MethodPost, "/mascotas", bytes.NewBuffer(body))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	rec := httptest.NewRecorder()
@@ -54,8 +35,6 @@ func TestSet(t *testing.T) {
 
 	if err := mascota_service.Set(c); err != nil {
 		t.Errorf("Error en la prueba de inserción: %v", err)
-	} else {
-		t.Logf("Prueba de inserción correcta")
 	}
 }
 

@@ -7,20 +7,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"go.mongodb.org/mongo-driver/mongo"
-
 	"github.com/labstack/echo/v4"
 )
 
-type MascotaService struct {
-	DB *mongo.Collection
-}
-
-/*func NewMascotaService(db *mongo.Collection) *MascotaService {
-	return &MascotaService{DB: db}
-}*/
-
-func /*(ms *MascotaService)*/ Set(c echo.Context) error {
+func Set(c echo.Context) error {
 	var mascota models.Mascota
 	if err := c.Bind(&mascota); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
@@ -30,16 +20,13 @@ func /*(ms *MascotaService)*/ Set(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al insertar la mascota"})
 	}
 
-	return c.JSON(http.StatusOK,
-		map[string]string{"message": "mascota insertada con exito"})
+	return c.JSON(http.StatusOK, map[string]string{"message": "Mascota insertada con éxito"})
 }
 
-func /*(ms *MascotaService)*/ Get(c echo.Context) error {
+func Get(c echo.Context) error {
 	mascotas, err := mac.Get()
-
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError,
-			map[string]string{"message": "error al obtener las mascotas"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al obtener las mascotas"})
 	}
 
 	return c.JSON(http.StatusOK, mascotas)
@@ -47,7 +34,7 @@ func /*(ms *MascotaService)*/ Get(c echo.Context) error {
 
 func GetByDuenoID(c echo.Context) error {
 	duenoIDStr := c.Param("dueno_id")
-	log.Println("Solicitud recibida para dueno_id:", duenoIDStr) // Log para depuración
+	log.Println("Solicitud recibida para dueno_id:", duenoIDStr)
 	duenoID, err := strconv.Atoi(duenoIDStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de dueño inválido"})
@@ -61,7 +48,7 @@ func GetByDuenoID(c echo.Context) error {
 	return c.JSON(http.StatusOK, mascotas)
 }
 
-func /*(ms *MascotaService)*/ Update(c echo.Context) error {
+func Update(c echo.Context) error {
 	mascotaID := c.Param("id")
 	id, err := strconv.Atoi(mascotaID)
 	if err != nil {
@@ -81,19 +68,17 @@ func /*(ms *MascotaService)*/ Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"message": "Mascota actualizada con éxito"})
 }
 
-func /*(ms *MascotaService)*/ Delete(c echo.Context) error {
-	mascota_id_str := c.Param("id")
-
-	mascota_id, err := strconv.ParseInt(mascota_id_str, 10, 32)
+func Delete(c echo.Context) error {
+	mascotaIDStr := c.Param("id")
+	mascotaID, err := strconv.Atoi(mascotaIDStr)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de mascota invalido"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID inválido"})
 	}
 
-	err = mac.Delete(uint(mascota_id))
+	err = mac.Delete(uint(mascotaID))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError,
-			map[string]string{"message": "error al eliminar la mascota"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al eliminar la mascota"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{"message": "mascota eliminada con exito"})
+	return c.JSON(http.StatusOK, map[string]string{"message": "Mascota eliminada con éxito"})
 }
