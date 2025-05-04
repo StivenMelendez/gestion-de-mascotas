@@ -3,10 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 
-	//"gestion-de-mascotas/routes"
-
+	"gestion-de-mascotas/routes"
 	raza_service "gestion-de-mascotas/services/raza.service"
 	tipo_service "gestion-de-mascotas/services/tipo.service"
 	"gestion-de-mascotas/utils"
@@ -24,12 +22,12 @@ func main() {
 	)
 
 	e := echo.New()
-
+	routes.RegisterRoutes(e)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000"}, // Cambia esto al dominio del frontend
+		AllowOrigins: []string{"http://localhost:3000"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
 
@@ -53,7 +51,8 @@ func main() {
 	}
 	fmt.Println("Razas insertadas correctamente.")
 
-	port := ":8000"
+	port := ":7000"
 	fmt.Printf("Servidor iniciado en http://localhost%s\n", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(e.Start(port))
+
 }

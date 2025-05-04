@@ -8,7 +8,7 @@ import (
 
 func RegisterRoutes(e *echo.Echo) {
 	// Rutas para el servicio de mascotas
-	e.POST("/mascotas", mascota_service.Set)                         // Crear una nueva mascota
+	e.POST("/mascotas/crear/:dueno_id", mascota_service.Set)         // Crear una nueva mascota
 	e.GET("/mascotas", mascota_service.Get)                          // Obtener todas las mascotas
 	e.GET("/mascotas/dueno/:dueno_id", mascota_service.GetByDuenoID) // Obtener mascotas por ID del dueño
 	e.PUT("/mascotas/:id", mascota_service.Update)                   // Actualizar una mascota

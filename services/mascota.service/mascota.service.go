@@ -3,6 +3,7 @@ package mascota_service
 import (
 	mac "gestion-de-mascotas/controllers/mascota.controller"
 	"gestion-de-mascotas/models"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -44,8 +45,9 @@ func /*(ms *MascotaService)*/ Get(c echo.Context) error {
 	return c.JSON(http.StatusOK, mascotas)
 }
 
-func /*(ms *MascotaService)*/ GetByDuenoID(c echo.Context) error {
+func GetByDuenoID(c echo.Context) error {
 	duenoIDStr := c.Param("dueno_id")
+	log.Println("Solicitud recibida para dueno_id:", duenoIDStr) // Log para depuración
 	duenoID, err := strconv.Atoi(duenoIDStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de dueño inválido"})
