@@ -89,7 +89,7 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 			"Foto":                mascota.Foto,
 			"nombre":              mascota.Nombre,
 			"peso":                mascota.Peso,
-			"raza_id":             mascota.RazaID,
+			"Raza":                mascota.Raza,
 			"fecha_de_nacimiento": mascota.FechaDeNacimiento,
 			"updatedat":           time.Now(),
 		},

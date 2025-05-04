@@ -5,10 +5,10 @@ import (
 )
 
 type Mascota struct {
-	ID                uint      `bson:"id" json:"id"`
+	//ID                uint      `bson:"id" json:"id"`
 	Foto              string    `bson:"foto" json:"foto"` // Ruta de la imagen
 	Nombre            string    `bson:"nombre" json:"nombre"`
-	RazaID            uint      `bson:"raza_id" json:"raza_id"`
+	Raza              Raza      `bson:"raza" json:"raza"`
 	Peso              float64   `bson:"peso" json:"peso"`
 	DuenoID           uint      `bson:"dueno_id" json:"dueno_id"`
 	FechaDeNacimiento time.Time `bson:"fecha_de_nacimiento" json:"fecha_de_nacimiento"`

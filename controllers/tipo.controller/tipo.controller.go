@@ -16,7 +16,7 @@ var (
 
 func Set(tipos []models.Tipo) error {
 	for _, tipo := range tipos {
-		filter := bson.M{"id": tipo.ID}
+		filter := bson.M{"nombre": tipo.Nombre}
 		count, err := Collection.CountDocuments(ctx, filter)
 		if err != nil {
 			return fmt.Errorf("error al verificar la existencia del tipo: %v", err)

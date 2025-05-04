@@ -1,4 +1,4 @@
-package raza_repository
+package raza_controller
 
 import (
 	"context"
@@ -16,7 +16,7 @@ var (
 
 func Set(razas []models.Raza) error {
 	for _, raza := range razas {
-		filter := bson.M{"id": raza.ID}
+		filter := bson.M{"id": raza}
 		count, err := Collection.CountDocuments(ctx, filter)
 		if err != nil {
 			return fmt.Errorf("error al verificar la existencia de la raza: %v", err)

@@ -25,14 +25,18 @@ func TestSet(t *testing.T) {
 	foto := "./images/mascota.jpg"
 
 	mascota := models.Mascota{
-		ID:                1,
-		Nombre:            "Pepito",
-		RazaID:            1,
+		Foto:   foto,
+		Nombre: "Pepito",
+		Raza: models.Raza{
+			Nombre: "Labrador",
+			Tipo: models.Tipo{
+				Nombre: "Perro",
+			},
+		},
 		Peso:              10.5,
 		DuenoID:           1,
 		FechaDeNacimiento: fechaNacimiento,
 		CreatedAt:         time.Now(),
-		Foto:              foto,
 	}
 
 	// Serializar la mascota a JSON
@@ -47,8 +51,6 @@ func TestSet(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-
-	//service := mascota_service.NewMascotaService(nil)
 
 	if err := mascota_service.Set(c); err != nil {
 		t.Errorf("Error en la prueba de inserción: %v", err)
@@ -66,12 +68,10 @@ func TestGet(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
-	//service := mascota_service.NewMascotaService(nil)
-
 	if err := mascota_service.Get(c); err != nil {
-		t.Errorf("Error en la prueba de obtencion: %v", err)
+		t.Errorf("Error en la prueba de obtención: %v", err)
 	} else {
-		t.Logf("Prueba de obtencion correcta")
+		t.Logf("Prueba de obtención correcta")
 	}
 }
 
@@ -87,8 +87,6 @@ func TestGetByDuenoID(t *testing.T) {
 	c.SetParamNames("dueno_id")
 	c.SetParamValues("1")
 
-	//service := mascota_service.NewMascotaService(nil)
-
 	err := mascota_service.GetByDuenoID(c)
 	if err != nil {
 		t.Errorf("Error en la prueba de obtención por dueño ID: %v", err)
@@ -103,9 +101,10 @@ func TestUpdate(t *testing.T) {
 	e := echo.New()
 
 	body := `{
+        "foto": "./images/mascota_actualizada.jpg",
         "nombre": "Pedrito",
         "peso": 9.5,
-        "raza_id": 1,
+        "raza": {"id": 1, "nombre": "Labrador"},
         "fecha_de_nacimiento": "2020-01-01T00:00:00Z"
     }`
 
@@ -118,8 +117,6 @@ func TestUpdate(t *testing.T) {
 	c.SetParamNames("id")
 	c.SetParamValues("1")
 
-	//service := mascota_service.NewMascotaService(nil)
-
 	err := mascota_service.Update(c)
 	if err != nil {
 		t.Errorf("Error en la prueba de actualización: %v", err)
@@ -129,6 +126,7 @@ func TestUpdate(t *testing.T) {
 		t.Errorf("Código de estado esperado %d, obtenido %d", http.StatusOK, rec.Code)
 	}
 }
+
 func TestDelete(t *testing.T) {
 	e := echo.New()
 
@@ -140,8 +138,6 @@ func TestDelete(t *testing.T) {
 
 	c.SetParamNames("id")
 	c.SetParamValues("1")
-
-	//service := mascota_service.NewMascotaService(nil)
 
 	err := mascota_service.Delete(c)
 	if err != nil {
