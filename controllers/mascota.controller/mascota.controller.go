@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"gestion-de-mascotas/database"
 	m "gestion-de-mascotas/models"
+	"log"
+	"strconv"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var (
@@ -16,6 +19,7 @@ var (
 )
 
 func Set(mascota m.Mascota) error {
+	mascota.ID = primitive.NewObjectID()
 	_, err := Collection.InsertOne(ctx, mascota)
 	return err
 }
@@ -39,22 +43,16 @@ func Get() (m.Mascotas, error) {
 	return mascotas, nil
 }
 
-/*func GetByName(mascotaID uint) (m.Mascota, error) {
-	var Mascota m.Mascota
+func GetByDuenoID(duenoID string) (m.Mascotas, error) {
+	var mascotas m.Mascotas
 
-	filter := bson.M{"id": mascotaID}
-
-	err := Collection.FindOne(ctx, filter).Decode(&Mascota)
+	// Convertir duenoID a número si es necesario
+	duenoIDInt, err := strconv.Atoi(duenoID)
 	if err != nil {
-		return Mascota, err
+		return nil, fmt.Errorf("dueno_id inválido: %s", duenoID)
 	}
 
-	return Mascota, nil
-}*/
-
-func GetByDuenoID(duenoID uint) (m.Mascotas, error) {
-	var mascotas m.Mascotas
-	filter := bson.M{"dueno_id": duenoID}
+	filter := bson.M{"dueno_id": duenoIDInt}
 	cursor, err := Collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
@@ -68,12 +66,12 @@ func GetByDuenoID(duenoID uint) (m.Mascotas, error) {
 		}
 		mascotas = append(mascotas, mascota)
 	}
-
+	log.Println("Mascotas encontradas:", mascotas)
 	return mascotas, nil
 }
 
-func Update(mascota m.Mascota, mascotaID uint) error {
-	filter := bson.M{"id": mascotaID}
+func Update(mascota m.Mascota, mascotaID primitive.ObjectID) error {
+	filter := bson.M{"_id": mascotaID}
 	update := bson.M{
 		"$set": bson.M{
 			"foto":                mascota.Foto,
@@ -88,14 +86,14 @@ func Update(mascota m.Mascota, mascotaID uint) error {
 	return err
 }
 
-func Delete(mascotaID uint) error {
-	filter := bson.M{"id": mascotaID}
+func Delete(mascotaID primitive.ObjectID) error {
+	filter := bson.M{"_id": mascotaID}
 	result, err := Collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
 	if result.DeletedCount == 0 {
-		return fmt.Errorf("no se encontró ningún documento con el id %d", mascotaID)
+		return fmt.Errorf("no se encontró ningún documento con el id %s", mascotaID.Hex())
 	}
 	return nil
 }

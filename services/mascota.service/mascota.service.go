@@ -5,15 +5,20 @@ import (
 	"gestion-de-mascotas/models"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Set(c echo.Context) error {
 	var mascota models.Mascota
 	if err := c.Bind(&mascota); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
+	}
+
+	// Validar campos obligatorios
+	if mascota.Nombre == "" || mascota.Raza.Nombre == "" || mascota.Peso <= 0 {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Faltan campos obligatorios"})
 	}
 
 	if err := mac.Set(mascota); err != nil {
@@ -35,12 +40,8 @@ func Get(c echo.Context) error {
 func GetByDuenoID(c echo.Context) error {
 	duenoIDStr := c.Param("dueno_id")
 	log.Println("Solicitud recibida para dueno_id:", duenoIDStr)
-	duenoID, err := strconv.Atoi(duenoIDStr)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID de dueño inválido"})
-	}
 
-	mascotas, err := mac.GetByDuenoID(uint(duenoID))
+	mascotas, err := mac.GetByDuenoID(duenoIDStr) // Usar el ID del dueño como string
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al obtener las mascotas"})
 	}
@@ -49,8 +50,9 @@ func GetByDuenoID(c echo.Context) error {
 }
 
 func Update(c echo.Context) error {
-	mascotaID := c.Param("id")
-	id, err := strconv.Atoi(mascotaID)
+	// Obtener el ObjectId desde la ruta
+	mascotaID := c.Param("_id")
+	objectID, err := primitive.ObjectIDFromHex(mascotaID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID inválido"})
 	}
@@ -60,7 +62,8 @@ func Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
 	}
 
-	err = mac.Update(mascota, uint(id))
+	// Pasar el ObjectId al controlador
+	err = mac.Update(mascota, objectID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al actualizar la mascota"})
 	}
@@ -69,13 +72,15 @@ func Update(c echo.Context) error {
 }
 
 func Delete(c echo.Context) error {
-	mascotaIDStr := c.Param("id")
-	mascotaID, err := strconv.Atoi(mascotaIDStr)
+	// Obtener el ObjectId desde la ruta
+	mascotaID := c.Param("_id")
+	objectID, err := primitive.ObjectIDFromHex(mascotaID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID inválido"})
 	}
 
-	err = mac.Delete(uint(mascotaID))
+	// Pasar el ObjectId al controlador
+	err = mac.Delete(objectID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al eliminar la mascota"})
 	}

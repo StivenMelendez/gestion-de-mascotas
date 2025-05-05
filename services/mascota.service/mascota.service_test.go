@@ -11,6 +11,8 @@ import (
 	"gestion-de-mascotas/models"
 	mascota_service "gestion-de-mascotas/services/mascota.service"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,6 +20,7 @@ func TestSet(t *testing.T) {
 	e := echo.New()
 
 	mascota := models.Mascota{
+		ID:                primitive.NewObjectID(),
 		Foto:              "./images/mascota.jpg",
 		Nombre:            "Pepito",
 		Raza:              models.Raza{Nombre: "Labrador", Tipo: models.Tipo{Nombre: "Perro"}},
