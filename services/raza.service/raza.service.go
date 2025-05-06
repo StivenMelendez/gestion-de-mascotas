@@ -5,7 +5,11 @@ import (
 	"fmt"
 	rac "gestion-de-mascotas/controllers/raza.controller"
 	"gestion-de-mascotas/models"
+	"net/http"
 	"os"
+	"strconv"
+
+	"github.com/labstack/echo/v4"
 )
 
 func Set(filePath string) error {
@@ -27,10 +31,15 @@ func Set(filePath string) error {
 	return nil
 }
 
-func Get(tipoID uint) (models.Razas, error) {
-	razas, err := rac.Get(tipoID)
+func Get(c echo.Context) error {
+	tipoIDStr := c.Param("tipo_id")
+	tipoID, err := strconv.Atoi(tipoIDStr)
 	if err != nil {
-		return nil, fmt.Errorf("error al obtener las razas por tipo: %v", err)
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "tipo_id debe ser un número válido"})
 	}
-	return razas, nil
+	razas, err := rac.Get(uint(tipoID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error al obtener las razas"})
+	}
+	return c.JSON(http.StatusOK, razas)
 }

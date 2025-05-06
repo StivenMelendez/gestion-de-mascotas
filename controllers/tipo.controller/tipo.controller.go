@@ -38,20 +38,20 @@ func Get() (models.Tipos, error) {
 
 	cursor, err := Collection.Find(ctx, bson.M{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error al obtener los tipos: %v", err)
 	}
 	defer cursor.Close(ctx)
 
 	for cursor.Next(ctx) {
 		var tipo models.Tipo
 		if err := cursor.Decode(&tipo); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error al decodificar el tipo: %v", err)
 		}
 		tipos = append(tipos, tipo)
 	}
 
 	if err := cursor.Err(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error al obtener los tipos: %v", err)
 	}
 
 	return tipos, nil

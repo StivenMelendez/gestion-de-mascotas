@@ -5,7 +5,10 @@ import (
 	"fmt"
 	tic "gestion-de-mascotas/controllers/tipo.controller"
 	"gestion-de-mascotas/models"
+	"net/http"
 	"os"
+
+	"github.com/labstack/echo/v4"
 )
 
 func Set(filePath string) error {
@@ -27,10 +30,10 @@ func Set(filePath string) error {
 	return nil
 }
 
-func Get() (models.Tipos, error) {
+func Get(c echo.Context) error {
 	tipos, err := tic.Get()
 	if err != nil {
-		return nil, fmt.Errorf("error al obtener los tipos: %v", err)
+		return fmt.Errorf("error al obtener los tipos: %v", err)
 	}
-	return tipos, nil
+	return c.JSON(http.StatusOK, tipos)
 }
