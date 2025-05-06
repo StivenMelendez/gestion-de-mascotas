@@ -3,7 +3,6 @@ module gestion-de-mascotas
 go 1.18
 
 require (
-	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.13.3
 	go.mongodb.org/mongo-driver v1.17.3
 )
