@@ -78,9 +78,12 @@ func Delete(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "ID inválido"})
 	}
-
+	var mascota models.Mascota
+	if err := c.Bind(&mascota); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
+	}
 	// Pasar el ObjectId al controlador
-	err = mac.Delete(objectID)
+	err = mac.Delete(mascota, objectID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al eliminar la mascota"})
 	}

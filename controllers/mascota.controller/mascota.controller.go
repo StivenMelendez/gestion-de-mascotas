@@ -20,6 +20,7 @@ var (
 
 func Set(mascota m.Mascota) error {
 	mascota.ID = primitive.NewObjectID()
+	mascota.CreatedAt = time.Now()
 	_, err := Collection.InsertOne(ctx, mascota)
 	return err
 }
@@ -52,7 +53,10 @@ func GetByDuenoID(duenoID string) (m.Mascotas, error) {
 		return nil, fmt.Errorf("dueno_id inválido: %s", duenoID)
 	}
 
-	filter := bson.M{"dueno_id": duenoIDInt}
+	filter := bson.M{
+		"dueno_id":  duenoIDInt,
+		"delete_at": bson.M{"$exists": false},
+	}
 	cursor, err := Collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
@@ -86,7 +90,19 @@ func Update(mascota m.Mascota, mascotaID primitive.ObjectID) error {
 	return err
 }
 
-func Delete(mascotaID primitive.ObjectID) error {
+func Delete(mascota m.Mascota, mascotaID primitive.ObjectID) error {
+	filter := bson.M{"_id": mascotaID}
+	update := bson.M{
+		"$set": bson.M{
+			"updated_at": time.Now(),
+			"delete_at":  time.Now(),
+		},
+	}
+	_, err := Collection.UpdateOne(ctx, filter, update)
+	return err
+}
+
+/*func Delete(mascotaID primitive.ObjectID) error {
 	filter := bson.M{"_id": mascotaID}
 	result, err := Collection.DeleteOne(ctx, filter)
 	if err != nil {
@@ -96,4 +112,4 @@ func Delete(mascotaID primitive.ObjectID) error {
 		return fmt.Errorf("no se encontró ningún documento con el id %s", mascotaID.Hex())
 	}
 	return nil
-}
+}*/
