@@ -5,8 +5,6 @@ import (
 	"log"
 
 	"gestion-de-mascotas/routes"
-	raza_service "gestion-de-mascotas/services/raza.service"
-	tipo_service "gestion-de-mascotas/services/tipo.service"
 	"gestion-de-mascotas/utils"
 
 	"github.com/labstack/echo/v4"
@@ -16,10 +14,10 @@ import (
 func main() {
 	fmt.Println("Inicializando la aplicación...")
 
-	var (
+	/*var (
 		path_tipos = "default-info/tipos-mascotas.json"
 		path_razas = "default-info/razas-mascotas.json"
-	)
+	)*/
 
 	e := echo.New()
 	routes.RegisterRoutes(e)
@@ -41,7 +39,7 @@ func main() {
 
 	//routes.RegisterRoutes(e /*, mascotaService*/)
 
-	if err := tipo_service.Set(path_tipos); err != nil {
+	/*if err := tipo_service.Set(path_tipos); err != nil {
 		log.Fatalf("Error al insertar los tipos de mascota: %v", err)
 	}
 	fmt.Println("Tipos de mascota insertados correctamente.")
@@ -49,7 +47,7 @@ func main() {
 	if err := raza_service.Set(path_razas); err != nil {
 		log.Fatalf("Error al insertar las razas: %v", err)
 	}
-	fmt.Println("Razas insertadas correctamente.")
+	fmt.Println("Razas insertadas correctamente.")*/
 
 	port := ":7000"
 	fmt.Printf("Servidor iniciado en http://localhost%s\n", port)

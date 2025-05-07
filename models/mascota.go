@@ -7,10 +7,10 @@ import (
 )
 
 type Mascota struct {
-	ID     primitive.ObjectID `bson:"_id" json:"_id"`
-	Foto   string             `bson:"foto" json:"foto"`
-	Nombre string             `bson:"nombre" json:"nombre"`
-	Raza   Raza               `bson:"raza" json:"raza"`
+	ID primitive.ObjectID `bson:"_id" json:"_id"`
+	//Foto   string             `bson:"foto" json:"foto"`
+	Nombre string `bson:"nombre" json:"nombre"`
+	Raza   Raza   `bson:"raza" json:"raza"`
 	//Activo            bool               `bson:"activo" json:"activo"`
 	Peso              float64   `bson:"peso" json:"peso"`
 	DuenoID           uint      `bson:"dueno_id" json:"dueno_id"`

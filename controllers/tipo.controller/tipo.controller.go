@@ -7,6 +7,7 @@ import (
 	"gestion-de-mascotas/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var (
@@ -23,6 +24,7 @@ func Set(tipos []models.Tipo) error {
 		}
 
 		if count == 0 {
+			tipo.ID = primitive.NewObjectID()
 			_, err := Collection.InsertOne(ctx, tipo)
 			if err != nil {
 				return fmt.Errorf("error al insertar el tipo: %v", err)

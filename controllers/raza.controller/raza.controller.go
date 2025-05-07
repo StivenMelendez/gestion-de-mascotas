@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"gestion-de-mascotas/database"
 	"gestion-de-mascotas/models"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var (
@@ -23,6 +25,7 @@ func Set(razas []models.Raza) error {
 		}
 
 		if count == 0 {
+			raza.ID = primitive.NewObjectID()
 			_, err := Collection.InsertOne(ctx, raza)
 			if err != nil {
 				return fmt.Errorf("error al insertar la raza: %v", err)
@@ -32,10 +35,18 @@ func Set(razas []models.Raza) error {
 
 	return nil
 }
-func Get(tipoID uint) (models.Razas, error) {
+func Get(tipoID string) (models.Razas, error) {
 	var razas models.Razas
 
-	filter := bson.M{"tipo_id": tipoID}
+	// Convierte el tipoID a ObjectID
+	objectID, err := primitive.ObjectIDFromHex(tipoID)
+	if err != nil {
+		return nil, fmt.Errorf("tipo_id no es un ObjectID válido: %v", err)
+	}
+
+	// Ajusta el filtro para buscar dentro de tipo._id
+	filter := bson.M{"tipo._id": objectID}
+	log.Printf("Filtro utilizado: %+v", filter)
 
 	cursor, err := Collection.Find(ctx, filter)
 	if err != nil {
@@ -54,6 +65,6 @@ func Get(tipoID uint) (models.Razas, error) {
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
-
+	log.Println("Razas encontradas:", razas)
 	return razas, nil
 }

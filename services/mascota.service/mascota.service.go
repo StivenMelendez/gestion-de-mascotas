@@ -13,15 +13,38 @@ import (
 func Set(c echo.Context) error {
 	var mascota models.Mascota
 	if err := c.Bind(&mascota); err != nil {
+		log.Printf("Error al enlazar los datos de la mascota: %v", err)
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Datos inválidos"})
 	}
 
+	log.Printf("Datos de la mascota recibidos: %+v", mascota)
+
 	// Validar campos obligatorios
-	if mascota.Nombre == "" || mascota.Raza.Nombre == "" || mascota.Peso <= 0 {
+	if mascota.Nombre == "" || mascota.Raza.Nombre == "" || mascota.Raza.Tipo.Nombre == "" || mascota.Peso <= 0 {
+		log.Printf("Faltan campos obligatorios: %+v", mascota)
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Faltan campos obligatorios"})
 	}
 
+	// Convertir raza._id a ObjectID
+	razaID, err := primitive.ObjectIDFromHex(mascota.Raza.ID.Hex())
+	if err != nil {
+		log.Printf("El ID de la raza no es válido: %v", err)
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "El ID de la raza no es válido"})
+	}
+
+	// Convertir raza.tipo._id a ObjectID
+	tipoID, err := primitive.ObjectIDFromHex(mascota.Raza.Tipo.ID.Hex())
+	if err != nil {
+		log.Printf("El ID del tipo no es válido: %v", err)
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "El ID del tipo no es válido"})
+	}
+
+	mascota.Raza.ID = razaID
+	mascota.Raza.Tipo.ID = tipoID
+
+	// Llamar al controlador para guardar la mascota
 	if err := mac.Set(mascota); err != nil {
+		log.Printf("Error al insertar la mascota: %v", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error al insertar la mascota"})
 	}
 

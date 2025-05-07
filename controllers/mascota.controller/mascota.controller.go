@@ -19,12 +19,17 @@ var (
 )
 
 func Set(mascota m.Mascota) error {
+	// Generar un nuevo ObjectID para la mascota
 	mascota.ID = primitive.NewObjectID()
 	mascota.CreatedAt = time.Now()
-	_, err := Collection.InsertOne(ctx, mascota)
-	return err
-}
 
+	// Insertar la mascota en la base de datos
+	_, err := Collection.InsertOne(ctx, mascota)
+	if err != nil {
+		return fmt.Errorf("error al insertar la mascota: %v", err)
+	}
+	return nil
+}
 func Get() (m.Mascotas, error) {
 	var mascotas m.Mascotas
 	cursor, err := Collection.Find(ctx, bson.M{})
@@ -78,7 +83,7 @@ func Update(mascota m.Mascota, mascotaID primitive.ObjectID) error {
 	filter := bson.M{"_id": mascotaID}
 	update := bson.M{
 		"$set": bson.M{
-			"foto":                mascota.Foto,
+			//"foto":                mascota.Foto,
 			"nombre":              mascota.Nombre,
 			"raza":                mascota.Raza,
 			"peso":                mascota.Peso,

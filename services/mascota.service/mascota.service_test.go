@@ -20,8 +20,8 @@ func TestSet(t *testing.T) {
 	e := echo.New()
 
 	mascota := models.Mascota{
-		ID:                primitive.NewObjectID(),
-		Foto:              "./images/mascota.jpg",
+		ID: primitive.NewObjectID(),
+		//Foto:              "./images/mascota.jpg",
 		Nombre:            "Pepito",
 		Raza:              models.Raza{Nombre: "Labrador", Tipo: models.Tipo{Nombre: "Perro"}},
 		Peso:              10.5,
